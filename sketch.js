@@ -2,15 +2,23 @@ let grid = document.getElementById("grid");
 let colourState = false;
 let gridSize = 16;
 let cMode = document.querySelector("cMode");
+let resetBtn = document.getElementById("reset");
 
+function changeType() {
+    colourState = !colourState;
+}
 
+resetBtn.addEventListener("click", () => {
+    resetGrid();
+    makeGrid(getGridSize());
+});
 
 function makeGrid(gridSize) {
     for (let i = 1; i <= gridSize * gridSize; i++) {
         let grids = document.createElement('div');
         grids.classList.add("grids");
         grids.style.width = 100 / gridSize + "%";
-        grids.style.length = 100 / gridSize + "%";
+        grids.style.height = 100 / gridSize + "%";
         grid.appendChild(grids);
     }
     colouredGrid();
@@ -25,13 +33,13 @@ function colouredGrid() {
             let b = Math.round(Math.random() * 255);
             let rColour = `rgb(${r}, ${g}, ${b})`;
             console.log(rColour);
-            e.target.style.backgroundColor = randomColor;
+            e.target.style.backgroundColor = rColour;
             cMode.style.backgroundColor = "#fff";
-            cMode.style.color = "#1A1A1D";
-            cMode.innerHTML = "Colour Mode ON";
-        
-         } else {
-            e.target.style.backroundcolor = "#000000";
+            cMode.style.color = "#1A1A1D"
+            cMode.innerHTML = "Colour Mode ON"
+
+        } else {
+            e.target.style.backgroundColor = "#000000";
             cMode.style.backroundcolor = "#86c232";
             cMode.style.color = "#fff";
             cMode.innerHTML = "Colour Mode OFF";
@@ -56,8 +64,7 @@ function getGridSize() {
 }
 
 function resetGrid() {
-    while (container.firstChild) container.removeChild(container.firstChild);
+    while (grid.firstChild) grid.removeChild(grid.firstChild);
 }
-
 
 makeGrid(gridSize);
