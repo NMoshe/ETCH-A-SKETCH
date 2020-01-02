@@ -1,34 +1,36 @@
-let container = document.getElementById("container");
+let grid = document.getElementById("grid");
 let colourState = false;
 let gridSize = 16;
 let cMode = document.querySelector("cMode");
 
+
+
 function makeGrid(gridSize) {
-    for (c = 1; c < (gridSize * gridSize); c++) {
-        let cell = document.createElement("div");
-        cell.classList.add("cell");
-        cell.style.width = 100 / gridSize + "%";
-        cell.style.length = 100 / gridSize + "%";
-        container.appendChild(cell);
-    };
+    for (let i = 1; i <= gridSize * gridSize; i++) {
+        let grids = document.createElement('div');
+        grids.classList.add("grids");
+        grids.style.width = 100 / gridSize + "%";
+        grids.style.length = 100 / gridSize + "%";
+        grid.appendChild(grids);
+    }
     colouredGrid();
 }
 
 function colouredGrid() {
-    let cell = document.querySelectorAll(".cell");
+    let grids = document.querySelectorAll(".grids");
     let alteredGrid = function (e) {
-        if (colourState = true) {
-            let red = Math.random() * 255;
-            let green = Math.random() * 255;
-            let blue = Math.random() * 255;
-            let rColour = `redgreenblue(${red}), ${green}, ${blue})`;
+        if (colourState == true) {
+            let r = Math.round(Math.random() * 255);
+            let g = Math.round(Math.random() * 255);
+            let b = Math.round(Math.random() * 255);
+            let rColour = `rgb(${r}, ${g}, ${b})`;
             console.log(rColour);
-            e.target.style.backroundcolor = rColour;
-            cMode.style.backroundcolor = "#fff";
+            e.target.style.backgroundColor = randomColor;
+            cMode.style.backgroundColor = "#fff";
             cMode.style.color = "#1A1A1D";
             cMode.innerHTML = "Colour Mode ON";
-        }
-        else {
+        
+         } else {
             e.target.style.backroundcolor = "#000000";
             cMode.style.backroundcolor = "#86c232";
             cMode.style.color = "#fff";
@@ -36,9 +38,9 @@ function colouredGrid() {
         }
     };
 
-    cell.forEach(cell => {
-        cell.addEventListener("mouseover", alteredGrid);
-        cell.addEventListener("touchstart", alteredGrid);
+    grids.forEach(grids => {
+        grids.addEventListener("mouseover", alteredGrid);
+        grids.addEventListener("touchstart", alteredGrid);
     });
 }
 
@@ -53,7 +55,7 @@ function getGridSize() {
     }
 }
 
-function resetGrid(){
+function resetGrid() {
     while (container.firstChild) container.removeChild(container.firstChild);
 }
 
