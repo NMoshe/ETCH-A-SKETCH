@@ -1,11 +1,22 @@
-let grid = document.getElementById("grid");
+let cell = document.getElementById("cell");
 let colourState = false;
+let opaqueGrid = false;
 let gridSize = 16;
-let cMode = document.querySelector("cMode");
 let resetBtn = document.getElementById("reset");
 
 function changeType() {
-    colourState = !colourState;
+    let cMode = document.querySelector("cMode");
+    colourState = true;
+}
+
+function originalType() {
+    let oMode = document.getElementById("oMode");
+    colourState = false;
+}
+
+function lightType() {
+    let oMode = document.getElementById("lMode");
+    opaqueGrid = true;
 }
 
 resetBtn.addEventListener("click", () => {
@@ -19,9 +30,39 @@ function makeGrid(gridSize) {
         grids.classList.add("grids");
         grids.style.width = 100 / gridSize + "%";
         grids.style.height = 100 / gridSize + "%";
-        grid.appendChild(grids);
+        cell.appendChild(grids);
     }
+    originalGrid();
     colouredGrid();
+    lighterGrid();
+}
+
+function lighterGrid() {
+    let grids = document.querySelectorAll(".grids");
+    let lightGrid = function (e) {
+        if (opaqueGrid == true){
+            if (e.target.style.opacity < "1"){
+                e.target.style.opacity -= "-0.1";
+            }
+        }
+    };
+    grids.forEach(grids => {
+        grids.addEventListener("mouseover", lightGrid);
+        grids.addEventListener("touchstart", lightGrid);
+    });
+}
+
+function originalGrid() {
+    let grids = document.querySelectorAll(".grids");
+    let darkGrid = function (e) {
+        if (colourState == false) {
+            e.target.style.backgroundColor = "#000000";
+        }
+    };
+    grids.forEach(grids => {
+        grids.addEventListener("mouseover", darkGrid);
+        grids.addEventListener("touchstart", darkGrid);
+    });
 }
 
 function colouredGrid() {
@@ -34,15 +75,6 @@ function colouredGrid() {
             let rColour = `rgb(${r}, ${g}, ${b})`;
             console.log(rColour);
             e.target.style.backgroundColor = rColour;
-            cMode.style.backgroundColor = "#fff";
-            cMode.style.color = "#1A1A1D"
-            cMode.innerHTML = "Colour Mode ON"
-
-        } else {
-            e.target.style.backgroundColor = "#000000";
-            cMode.style.backroundcolor = "#86c232";
-            cMode.style.color = "#fff";
-            cMode.innerHTML = "Colour Mode OFF";
         }
     };
 
@@ -58,13 +90,19 @@ function getGridSize() {
         alert("TOO BIG. Creating 16 x 16 grid");
         makeGrid(16);
     }
+    else if (gridSize < 16){
+        alert("too small. Creating 16 x 16 grid");
+        makeGrid(16);
+    }
     else {
         return gridSize;
     }
 }
 
 function resetGrid() {
-    while (grid.firstChild) grid.removeChild(grid.firstChild);
+    while (cell.firstChild) cell.removeChild(cell.firstChild);
+    colourState = false;
+    opaqueGrid = false;
 }
 
 makeGrid(gridSize);
